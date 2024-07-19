@@ -1,17 +1,19 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { Outlet } from "react-router-dom"
+import Home from "./components/Home/Home.jsx"
 
 function App() {
-  
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <h1>ANIRBNA SINGHA</h1>
-    </>
+
+    <div className='flex bg-slate-400 min-h-[60em] m-4 '>
+      <Home />
+      <Outlet />
+    </div>
+    
   )
+
 }
 
 export default App
