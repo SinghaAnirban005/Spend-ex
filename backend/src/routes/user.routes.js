@@ -19,6 +19,6 @@ router.route("/register").post(upload.single("avatar"),
 router.route("/refresh-token").post(refreshAccessToken)
 router.route("/login").post(loginUser)
 router.route("/logout").post(verifyJWT, logoutUser)
-router.route("/current-user").post(verifyJWT, getCurrentUser)
+router.route("/current-user").get(verifyJWT, getCurrentUser)
 
 export default router

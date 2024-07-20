@@ -43,7 +43,8 @@ function Register() {
     }
     
     return (
-        <form onSubmit={handleSubmit(handleRegister)}>
+        <div className="flex justify-center min-h-[60em] w-[80em] bg-[url('https://as1.ftcdn.net/v2/jpg/04/30/08/18/1000_F_430081855_QEVpMDhdx2GEKXcbKxUnLjzvwrYhsar8.jpg')]">
+            <form onSubmit={handleSubmit(handleRegister)}>
             <div className="flex-col">
                 <h1>Sign Up</h1>
                 {error && <h2 className="text-red-600">{error}</h2>}
@@ -103,6 +104,7 @@ function Register() {
                 </button>
             </div>
         </form>
+        </div>
     )
 }
 

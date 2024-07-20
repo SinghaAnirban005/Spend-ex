@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import axios from "axios"
@@ -10,6 +10,7 @@ function Login() {
     const { register, handleSubmit } = useForm()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [error, setError] = useState('')
 
     const handleLogin = async (data) => {
         try {
@@ -31,43 +32,56 @@ function Login() {
             navigate("/")
 
         } catch (error) {
-            
+            setError(error.message)
+            throw error
         }
     }
     
     return (
-        <form onSubmit={handleSubmit(handleLogin)} className="min-h-[60em]">
-            <div>
-                <h1>Login</h1>
+        <div className="flex justify-center min-h-[60em] w-[80em] bg-[url('https://as1.ftcdn.net/v2/jpg/04/30/08/18/1000_F_430081855_QEVpMDhdx2GEKXcbKxUnLjzvwrYhsar8.jpg')]">
+            <form onSubmit={handleSubmit(handleLogin)} className="mt-[5em] rounded-2xl border-none bg-slate-200 w-[40em] h-[50em]">
+            <div className="flex justify-center mt-[12em] ">
+                <h1 className="font-bold text-3xl">
+                    Login
+                </h1>
             </div>
 
-            <div>
-                <div>
-                    <label>Enter your e-mail</label>
+            <div className="flex font-lg justify-center">
+                    {error && <h2 className="text-red-600">{error}</h2>}
+            </div>
+
+            <div className="flex-col mt-[4em]">
+                <div className="flex justify-center items-center">
+                    <label className="mr-3">Enter your e-mail</label>
                     <input placeholder="E-Mail" type="email" {
                         ...register("email" , {
                             required: true
                         })
-                    } />
+                    }
+                    className="ml-3 h-[3em] w-[20em] rounded-xl border-slate-300 border-2"
+                    />
                 </div>
 
-                <div>
+                <div className="flex justify-center mt-[2em] items-center">
                     <label>Enter your Password</label>
                     <input placeholder="Password" type="password" {
                         ...register("password" , {
                             required: true
                         })
-                    } />
+                    } 
+                    className="ml-2 h-[3em] w-[20em] rounded-xl border-slate-300 border-2"
+                    />
                 </div>
 
             </div>
 
-            <div>
-                <button className="bg-blue-500" type="submit">
+            <div className="flex justify-center mt-[4em]">
+                <button className="bg-blue-500 w-[9em] rounded-xl hover:bg-blue-400 h-[2em]" type="submit">
                     Login
                 </button>
             </div>
         </form>
+        </div>
     )
 }
 
