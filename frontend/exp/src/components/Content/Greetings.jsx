@@ -28,7 +28,7 @@ function Greetings() {
             <h1>
                 {active ? <h1 className="text-yellow-800 font-bold text-4xl">
                     Welcome to Spend-Ex {user.fullName}
-                </h1> : <h1>Login or register yourself to Spend-Ex</h1>}
+                </h1> : <h1 className="text-yellow-800 font-bold text-4xl">Login or register yourself to Spend-Ex</h1>}
             </h1>
 
             {
