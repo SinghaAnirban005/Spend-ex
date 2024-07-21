@@ -7,7 +7,6 @@ const initialState = {
         amount: 0,
         date: "",
         note: "",
-        totalAmount: 0
     }],
 
     expense: [{
@@ -15,7 +14,6 @@ const initialState = {
         amount: 0,
         date: "",
         note: "",
-        totalAmount: 0
     }]
 }
 
@@ -38,11 +36,11 @@ export const ExpenseSlice = createSlice({
                     title: action.payload.title,
                     amount: action.payload.amount,
                     date: action.payload.date,
-                    note: action.payload.note,
-                    totalAmount: action.payload.totalAmount,
+                    note: action.payload.Note,
                 }
 
                 state.income.push(incomeData)
+                console.log(incomeData)
             }
         },
 

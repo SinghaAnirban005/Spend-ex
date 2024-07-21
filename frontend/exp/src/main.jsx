@@ -9,6 +9,8 @@ import Home from './components/Home/Home.jsx'
 import Login from "./components/Login/Login.jsx"
 import Register from "./components/Register/Register.jsx"
 import Greetings from './components/Content/Greetings.jsx'
+import Income from './components/Income/Income.jsx'
+import Dashboard from './components/Dashboard/Dashboard.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,6 +18,8 @@ const router = createBrowserRouter(
       <Route path='' element={<Greetings />} />
       <Route path='login' element={<Login />} />
       <Route path="register" element={<Register />} />
+      <Route path='income' element={<Income />} />
+      <Route path='dashboard' element={<Dashboard />} />
     </Route>
   )
 )

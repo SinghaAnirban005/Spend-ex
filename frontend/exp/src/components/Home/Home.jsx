@@ -107,9 +107,9 @@ function Home() {
                     {
                           sidebarItems.map((item) => (
                             item.status ? (
-                                <div className="flex justify-center hover:">
+                                <div className="flex justify-center ">
                                 <Link to={item.slug}>
-                                    <div key={item.slug} className="flex cursor-pointer my-4 items-center">
+                                    <div key={item.slug} className="flex justify-between cursor-pointer my-4">
                                         <img src={item.icon} alt="icon" className="h-6 w-6 mr-2 rounded-lg" />
                                         <h1 className="text-lg opacity-100 hover:opacity-30">
                                             {item.title}
@@ -124,7 +124,7 @@ function Home() {
 
                     {
                         active && (
-                            <footer className="flex justify-center mt-[20em] items-center opacity-50 hover:opacity-100">
+                            <footer className="flex justify-between mt-[20em] items-center opacity-50 hover:opacity-100">
                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_9kJjX_ZaIFdanRsLeKYkaVkdmWJWH0uoCg&s" alt="btn" className="h-6 w-6 rounded-lg mr-2" />
                                 <button onClick={handleLogout}>
                                    <span className="text-lg">Sign Out</span>

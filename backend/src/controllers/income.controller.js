@@ -1,12 +1,13 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { Income } from "../models/income.model";
+import { Income } from "../models/income.model.js";
 import { User } from "../models/user.model.js";
 
 const createIncome = asyncHandler( async(req, res) => {
     try {
         const {title, amount, date, Note } = req.body
+        console.log(title)
     
     if(!title) {
         throw new ApiError(
