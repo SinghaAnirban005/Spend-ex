@@ -53,7 +53,7 @@ const createIncome = asyncHandler( async(req, res) => {
 const deleteIncome = asyncHandler(async(req, res) => {
     try {
         
-    const authorId = req.user
+    const authorId = req.user._id
     if(!authorId){
         throw new ApiError(400, "author ID not available")
     }
@@ -84,16 +84,16 @@ const deleteIncome = asyncHandler(async(req, res) => {
 
 })
 
-const getIncome = asyncHandler(async() => {
+const getIncome = asyncHandler(async(req, res) => {
     
     try {
-        const authorId = await User.findById(req.user_id)
+        const authorId = await User.findById(req.user._id)
 
     if(!authorId) {
         throw new ApiError(400, "Failed to find User")
     }
 
-    const income  = await Income.findOne(
+    const income  = await Income.find(
         {
             Author: authorId
         }
@@ -114,7 +114,7 @@ const getIncome = asyncHandler(async() => {
     }
 })
 
-const totalIncome = asyncHandler(async() => {
+const totalIncome = asyncHandler(async(req, res) => {
     try {
         
         const authorId = req.user._id
@@ -132,9 +132,8 @@ const totalIncome = asyncHandler(async() => {
             throw new ApiError(400, "Income does not exist !!")
         }
 
-        const total = 0;
-        console.log(income)
-        // assuming that income is an array
+        let total = 0;
+
         income.forEach((data) => {
             total += data.amount
         })
