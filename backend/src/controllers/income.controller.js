@@ -24,7 +24,6 @@ const createIncome = asyncHandler( async(req, res) => {
     }
 
     const user = await User.findById(req.user._id).select("-password -refreshToken")
-
     const income = await Income.create({
         title,
         amount,
@@ -87,7 +86,8 @@ const deleteIncome = asyncHandler(async(req, res) => {
 const getIncome = asyncHandler(async(req, res) => {
     
     try {
-        const authorId = await User.findById(req.user._id)
+    
+    const authorId = await User.findById(req.user._id)
 
     if(!authorId) {
         throw new ApiError(400, "Failed to find User")
@@ -156,9 +156,115 @@ const totalIncome = asyncHandler(async(req, res) => {
     }
 })
 
+const getMinimum = asyncHandler(async(req, res) => {
+    try {
+
+        const authorId = req.user._id
+        const incomes = await Income.find({
+            Author: authorId
+        })
+
+        let minVal;
+
+        if(incomes.length === 0) {
+            minVal = 0;
+        }
+
+        else {
+            minVal = incomes[0].amount
+
+            for(let i = 1; i < incomes.length; i++) {
+                if(incomes[i].amount < minVal) {
+                    minVal = incomes[i].amount
+                }
+            }
+
+        }
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                minVal,
+                "Fetched min value"
+            )
+        )
+    } catch (error) {
+        console.error(error.message)
+        throw new ApiError(500, error)
+    }
+})
+
+
+const getMaximum = asyncHandler(async(req, res) => {
+    try {
+        const authorId = req.user._id
+        const incomes = await Income.find({
+            Author: authorId
+        })
+
+        let maxVal
+
+        if(incomes.length === 0) {
+            maxVal = 0;
+        }
+
+        else {
+            maxVal = incomes[0].amount
+
+            for(let i = 1; i < incomes.length; i++) {
+                if(incomes[i].amount > maxVal) {
+                    maxVal = incomes[i].amount
+                }
+            }
+
+        }
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                maxVal,
+                "Fetched max value"
+            )
+        )
+    } catch (error) {
+        console.error(error.message)
+        throw new ApiError(500, error)
+    }
+})
+
+const fetchIncome = asyncHandler(async(req, res) => {
+    try {
+        const incomes = await Income.find().select('date amount').lean();
+       
+        if(!incomes) {
+            throw new ApiError(400, "Couldn't query income")
+        }
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                incomes,
+                "Fetched data",
+            )
+        )
+    } catch (error) {
+        console.error("Error fetching incomes:", error);
+        return []
+    }
+})
+
 export {
     createIncome,
     deleteIncome,
     getIncome,
-    totalIncome
+    totalIncome,
+    getMinimum,
+    getMaximum,
+    fetchIncome
 }

@@ -157,9 +157,120 @@ const totalExpense = asyncHandler(async(req, res) => {
     }
 })
 
+
+const getMinimum = asyncHandler(async(req, res) => {
+    try {
+
+        const authorId = req.user._id
+        const expenses = await Expense.find({
+            Author: authorId
+        })
+
+        let minVal;
+
+        if(expenses.length === 0) {
+            minVal = 0;
+        }
+
+        else {
+            minVal = expenses[0].amount
+
+            for(let i = 1; i < expenses.length; i++) {
+                if(expenses[i].amount < minVal) {
+                    minVal = expenses[i].amount
+                }
+            }
+
+        }
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                minVal,
+                "Fetched min value"
+            )
+        )
+    } catch (error) {
+        console.error(error.message)
+        throw new ApiError(500, error)
+    }
+})
+
+
+const getMaximum = asyncHandler(async(req, res) => {
+    try {
+        const authorId = req.user._id
+        const expenses = await Expense.find({
+            Author: authorId
+        })
+
+        let maxVal
+
+        if(expenses.length === 0) {
+            maxVal = 0;
+        }
+
+        else {
+            maxVal = expenses[0].amount
+
+            for(let i = 1; i < expenses.length; i++) {
+                if(expenses[i].amount > maxVal) {
+                    maxVal = expenses[i].amount
+                }
+            }
+
+        }
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                maxVal,
+                "Fetched max value"
+            )
+        )
+    } catch (error) {
+        console.error(error.message)
+        throw new ApiError(500, error)
+    }
+})
+
+
+const fetchExpenses = async () => {
+    try {
+        const expenses = await Expense.find().select('date amount').lean();
+        
+        if(!expenses) {
+            throw new Error(400, "Couldn't resolve expense")
+        }
+
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                expenses,
+                "Failed to calculate expense"
+            )
+        )
+        //return expenses;
+    } catch (error) {
+        console.error("Error fetching expenses:", error);
+        return [];
+    }
+};
+
+
 export {
     createExpense,
     deleteExpense,
     getExpense,
-    totalExpense
+    totalExpense,
+    getMinimum,
+    getMaximum,
+    fetchExpenses
 }

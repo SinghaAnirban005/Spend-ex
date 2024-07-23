@@ -208,6 +208,7 @@ const getCurrentUser = asyncHandler(async(req, res) => {
     ))
 })
 
+
 export {
     registerUser,
     loginUser,
