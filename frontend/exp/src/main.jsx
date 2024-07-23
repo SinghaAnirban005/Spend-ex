@@ -11,6 +11,7 @@ import Register from "./components/Register/Register.jsx"
 import Greetings from './components/Content/Greetings.jsx'
 import Income from './components/Income/Income.jsx'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
+import Expense from './components/Expense/Expense.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +21,7 @@ const router = createBrowserRouter(
       <Route path="register" element={<Register />} />
       <Route path='income' element={<Income />} />
       <Route path='dashboard' element={<Dashboard />} />
+      <Route path='expense' element={<Expense />} />
     </Route>
   )
 )

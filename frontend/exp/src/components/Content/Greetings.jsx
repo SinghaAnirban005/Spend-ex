@@ -24,7 +24,7 @@ function Greetings() {
     const [user, setUser] = useState('')
 
     return (
-        <div className="flex bg-[url('https://www.mimeo.com/wp-content/uploads/2022/03/Check-out-how-an-expense-tracking-app-simplifies-reimbursements-1.jpg')] min-h-[60em] w-[80em] justify-center items-center">
+        <div className="flex bg-[url('https://as1.ftcdn.net/v2/jpg/04/30/08/18/1000_F_430081855_QEVpMDhdx2GEKXcbKxUnLjzvwrYhsar8.jpg')] min-h-[60em] w-[80em] justify-center items-center">
             <h1>
                 {active ? <h1 className="text-yellow-800 font-bold text-4xl">
                     Welcome to Spend-Ex {user.fullName}

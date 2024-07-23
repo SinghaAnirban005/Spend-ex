@@ -3,20 +3,20 @@ import { useEffect, useState } from 'react'
 import axios from "axios"
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from "react-redux"
-import { addIncome } from "../../store/Slice.js"
+import { addExpense } from "../../store/Slice.js"
 import { ApiError } from '../../../../../backend/src/utils/ApiError.js'
 
-function Income() {
+function Expense() {
 
     const { register , handleSubmit } = useForm()
     const dispatch = useDispatch()
     const info = useSelector((state) => state.income)
-    const [incomeData, setIncomeData] = useState([])
-    const [income , setIncome] = useState(0)
+    const [expenseData, setExpenseData] = useState([])
+    const [expense , setExpense] = useState(0)
 
     const handleDeletion = () => {
         try {
-            const res = axios.post("/api/v1/incomes/delete-income")
+            const res = axios.post("/api/v1/expenses/delete-expense")
 
             if(!res) {
                 throw new Error("Server error")
@@ -30,27 +30,27 @@ function Income() {
     }
 
 
-    const handleIncome = async(data) => {
+    const handleExpense = async(data) => {
 
         console.log(data)
 
         try {
 
-            const response = await axios.post("/api/v1/incomes/create-income", data)
+            const response = await axios.post("/api/v1/expenses/create-expense", data)
 
             if(!response) {
                 console.log("Couldn't handle data resposne")
                 throw new Error("Couldn't handle data resposne")
             }
 
-            const incomeInfo = response.data.data
+            const expenseInfo = response.data.data
 // Work on the redux state workflow later ..,.
             //dispatch(addIncome(incomeInfo))
-            const lists = await axios.get("/api/v1/incomes/getIncome")
-            setIncomeData(lists.data.data)
+            const lists = await axios.get("/api/v1/expenses/getExpense")
+            setExpenseData(lists.data.data)
 
-            const income = await axios.get("/api/v1/incomes/total-income")
-            setIncome(income.data.data)
+            const income = await axios.get("/api/v1/expenses/total-expense")
+            setExpense(income.data.data)
            
         } 
         catch (error) {
@@ -64,20 +64,20 @@ function Income() {
         ;(
          async () => {
              try {
-                 const response = await axios.get("/api/v1/incomes/getIncome")
+                 const response = await axios.get("/api/v1/expenses/getExpense")
  
                  if(!response) {
                      throw new ApiError("Failed to validate response")
                  }
-                 console.log(response)
-                 setIncomeData(response.data.data)
+               
+                 setExpenseData(response.data.data)
 
-                 const totalIncome = await axios.get("/api/v1/incomes/total-income")
-                 if(!totalIncome) {
-                    throw new Error("Failed to calculate total income")
+                 const totalExpense = await axios.get("/api/v1/expenses/total-expense")
+                 if(!totalExpense) {
+                    throw new Error("Failed to calculate total expense")
                  }
 
-                setIncome(totalIncome.data.data)
+                setExpense(totalExpense.data.data)
 
 
              } catch (error) {
@@ -91,19 +91,19 @@ function Income() {
     return (
         <div className='flex-col min-h-[60em] w-[80em] p-6 '>
           <div className='flex justify-between mb-2 h-[3em] items-center'>
-            <h1 className='font-bold text-2xl'>Incomes</h1>
+            <h1 className='font-bold text-2xl'>Expenses</h1>
           </div>
 
         <div className='flex bg-slate-400 font justify-center h-[4em] items-center mb-2 rounded-xl text-lg'>
-            <h1 className='font-bold'>Total Income : <span className='text-lime-700'>${income}</span></h1>
+            <h1 className='font-bold'>Total Expense : <span className='text-red-700'> - ${expense}</span></h1>
         </div>
 
         <div className='flex justify-between px-6 py-4 min-h-[50em]'>
             <div className='flex-col w-[20em] h-[30em]'>
-                <form onSubmit={handleSubmit(handleIncome)} className='flex-col'>
+                <form onSubmit={handleSubmit(handleExpense)} className='flex-col'>
 
                     <div className='flex justify-center mt-[2em]'>
-                    <input placeholder='Salary title' type='text' {
+                    <input placeholder='Expense title' type='text' {
                         ...register("title", {
                             required: true
                         })
@@ -114,7 +114,7 @@ function Income() {
 
                     <div className='flex justify-center mt-[1em]'>
 
-                    <input placeholder='Salary Amount' type='number' {
+                    <input placeholder='Expense Amount' type='number' {
                         ...register("amount", {
                             required: true
                         })
@@ -161,9 +161,9 @@ function Income() {
             <div className=' flex justify-center p-2 w-[37em] max-w-[37em]'>
                <ul className="">
                 {
-                    incomeData.map((item) => (
+                    expenseData.map((item) => (
                         <li>
-                        <div className='flex-col p-2 bg-lime-300 opacity-100 hover:opacity-75 my-2 h-[4em] w-[35em] rounded-lg'>
+                        <div className='flex-col p-2 bg-red-500 opacity-100 hover:opacity-75 my-2 h-[4em] w-[35em] rounded-lg'>
                             <div className='flex justify-between'>
                                 <div>
                                     <h1>{item.title}</h1>
@@ -202,4 +202,4 @@ function Income() {
     )
 }
 
-export default Income
+export default Expense

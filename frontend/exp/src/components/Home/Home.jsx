@@ -86,12 +86,12 @@ function Home() {
     return (
         <div className="flex-col w-[20em] min-h-[60em]">
            
-            <div className="pt-[5em] h-[60em] bg-lime-400">
+            <div className="pt-[5em] h-[70em] bg-lime-400">
                 {active ? (
                      <div className="flex justify-center mb-[10em]">
                         <div className="flex-col ">
                             <div className="flex justify-center rounded-3xl h-[6em] items-center">
-                                <img src={userData.avatar} alt="Spend-ex" className="cursor-pointer h-20 w-24 rounded-[10em] border-black border-4" />
+                                <img src={userData.avatar} alt="Spend-ex" className="cursor-pointer h-24 w-24 rounded-[10em] border-black border-4" />
                             </div>
                         
                             
@@ -124,7 +124,7 @@ function Home() {
 
                     {
                         active && (
-                            <footer className="flex justify-center mt-[20em] items-center opacity-50 hover:opacity-100">
+                            <footer className="flex justify-center mt-[24em] items-center opacity-50 hover:opacity-100">
                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_9kJjX_ZaIFdanRsLeKYkaVkdmWJWH0uoCg&s" alt="btn" className="h-6 w-6 rounded-lg mr-2" />
                                 <button onClick={handleLogout}>
                                    <span className="text-lg">Sign Out</span>
