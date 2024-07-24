@@ -84,9 +84,9 @@ function Home() {
     ]
 
     return (
-        <div className="flex-col w-[20em] min-h-[60em]">
+        <div className="flex-col w-[20em] min-h-[60em] ">
            
-            <div className="pt-[5em] h-[70em] bg-lime-400">
+            <div className="pt-[5em] h-[70em] bg-yellow-600 rounded-l-md">
                 {active ? (
                      <div className="flex justify-center mb-[10em]">
                         <div className="flex-col ">

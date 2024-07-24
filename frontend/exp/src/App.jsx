@@ -7,7 +7,7 @@ function App() {
 
   return (
 
-    <div className='flex bg-slate-300 min-h-[60em] m-4'>
+    <div className='flex min-h-[60em] m-2 bg-blue-950 rounded-md'>
       <Home />
       <Outlet />
     </div>

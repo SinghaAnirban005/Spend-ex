@@ -91,7 +91,7 @@ function Income() {
     return (
         <div className='flex-col min-h-[60em] w-[80em] p-6 '>
           <div className='flex justify-between mb-2 h-[3em] items-center'>
-            <h1 className='font-bold text-2xl'>Incomes</h1>
+            <h1 className='font-bold text-2xl text-white'>Incomes</h1>
           </div>
 
         <div className='flex bg-slate-400 font justify-center h-[4em] items-center mb-2 rounded-xl text-lg'>
@@ -149,7 +149,7 @@ function Income() {
 
                     <div className='flex justify-start mt-[4em] px-4' >
                         <button type='submit' className='flex items-center px-4 justify-between bg-rose-400 w-[10em] h-[2em] hover:bg-rose-500 rounded-lg'>
-                            Add Expense
+                            Add Income
                             <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScbMMl34NX38maM9Qs97XE33rlPIibkRlhpQ&s' alt='right-arrow' className='h-6 w-6 rounded-xl' />
                         </button>
                     </div>

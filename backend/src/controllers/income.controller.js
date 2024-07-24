@@ -238,7 +238,11 @@ const getMaximum = asyncHandler(async(req, res) => {
 
 const fetchIncome = asyncHandler(async(req, res) => {
     try {
-        const incomes = await Income.find().select('date amount').lean();
+        const incomes = await Income.find(
+            {
+                Author: req.user._id
+            }
+        ).select('date amount').lean()
        
         if(!incomes) {
             throw new ApiError(400, "Couldn't query income")

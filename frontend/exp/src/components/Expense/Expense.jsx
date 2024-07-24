@@ -91,7 +91,7 @@ function Expense() {
     return (
         <div className='flex-col min-h-[60em] w-[80em] p-6 '>
           <div className='flex justify-between mb-2 h-[3em] items-center'>
-            <h1 className='font-bold text-2xl'>Expenses</h1>
+            <h1 className='font-bold text-2xl text-white'>Expenses</h1>
           </div>
 
         <div className='flex bg-slate-400 font justify-center h-[4em] items-center mb-2 rounded-xl text-lg'>

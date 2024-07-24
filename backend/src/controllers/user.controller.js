@@ -4,6 +4,8 @@ import { User} from "../models/user.model.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
+import { Income } from "../models/income.model.js"
+import { Expense } from "../models/expense.model.js"
 
 
 const generateAccessAndRefereshTokens = async(userId) => {
@@ -208,6 +210,48 @@ const getCurrentUser = asyncHandler(async(req, res) => {
     ))
 })
 
+const recentHistory = asyncHandler(async(req, res) => {
+
+    try {
+        
+        const incomes = await Income.find({
+            Author: req.user._id
+        }).select("title amount date").lean()
+        console.log(incomes)
+
+        const expense = await Expense.find({
+            Author: req.user._id
+        }).select("title amount date").lean()
+
+        console.log(incomes)
+        console.log(expense)
+
+        const finalData = [...incomes, ...expense]
+        if(!finalData) {
+            throw new ApiError(400, "Failed to resolve finalData")
+        }
+
+        // Attempt to sort based on time 
+        finalData.sort((a, b) => new Date(a.date) - new Date(b.date))
+
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                finalData,
+                "Successfully fetched recent logs"
+            )
+        )
+
+    } catch (error) {
+        console.error(error.message)
+        throw new ApiError(500, "Failed to resolve recents history ")
+    }
+
+})
+
 
 export {
     registerUser,
@@ -215,5 +259,6 @@ export {
     logoutUser,
     refreshAccessToken,
     getCurrentUser,
-    generateAccessAndRefereshTokens
+    generateAccessAndRefereshTokens,
+    recentHistory
 }

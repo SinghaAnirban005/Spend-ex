@@ -239,30 +239,35 @@ const getMaximum = asyncHandler(async(req, res) => {
 })
 
 
-const fetchExpenses = async () => {
-    try {
-        const expenses = await Expense.find().select('date amount').lean();
-        
-        if(!expenses) {
-            throw new Error(400, "Couldn't resolve expense")
+const fetchExpenses = asyncHandler(async(req, res) => {
+        try {
+            const expenses = await Expense.find(
+            {
+                Author: req.user._id
+            }
+        ).select('date amount').lean()
+            
+            if(!expenses) {
+                throw new Error(400, "Couldn't resolve expense")
+            }
+    
+    
+            return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    expenses,
+                    "Fetched Expenses !!"
+                )
+            )
+
+        } catch (error) {
+            console.error("Error fetching expenses:", error);
+            return [];
         }
 
-
-        return res
-        .status(200)
-        .json(
-            new ApiResponse(
-                200,
-                expenses,
-                "Failed to calculate expense"
-            )
-        )
-        //return expenses;
-    } catch (error) {
-        console.error("Error fetching expenses:", error);
-        return [];
-    }
-};
+})
 
 
 export {

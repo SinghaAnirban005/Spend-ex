@@ -2,6 +2,7 @@ import React from "react"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import Chart from 'chart.js/auto';
+import Recent from "../Recents/Recent.jsx"
 
 function Dashboard() {
 
@@ -15,6 +16,7 @@ function Dashboard() {
     const [maxE, setMaxE] = useState(0)
 
     useEffect(() => {
+
         ;(async() => {
          try {
              const res1 = await axios.get("/api/v1/incomes/total-income")
@@ -45,10 +47,10 @@ function Dashboard() {
              
              const final = income - expense 
              setTotal(final)
- 
-             createGraph()
- 
- 
+
+             
+            await createGraph()
+            
          } catch (error) {
              console.error(error.message)
              throw new Error("Failed to fetch data")
@@ -60,20 +62,26 @@ function Dashboard() {
 
     const processIncomesAndExpenses = async () => {
         try {
+            const expense = await axios.get("/api/v1/expenses/fetchExpense");
             const incomes = await axios.get("/api/v1/incomes/fetchIncome");
-            const expenses = await axios.get("/api/v1/expenses/fetchExpense");
-    
-            // Example processing: Combine and sort by date
-            const combinedData = [...incomes, ...expenses];
+            console.log(...expense.data.data)
+            console.log(...incomes.data.data)
+            
+            
+            const inc = incomes.data.data
+            const exp = expense.data.data
+         
+            const combinedData = [...inc, ...exp];
             combinedData.sort((a, b) => new Date(a.date) - new Date(b.date));
+           
+            console.log(combinedData)
     
             return combinedData;
         } catch (error) {
-            console.error("Error processing incomes and expenses:", error);
+            console.error("Error processing incomes and expenses:", error.message);
             return [];
         }
     };
-
    
 
     const createGraph = async () => {
@@ -81,9 +89,14 @@ function Dashboard() {
 
         const dates = data.map(item => new Date(item.date));
         const amounts = data.map(item => item.amount);
-        const labels = data.map(item => item.title); // Example: Use title as label
 
-        const ctx = document.getElementById('myChart').getContext('2d');
+        console.log(dates)
+        console.log(amounts)
+        //const labels = data.map(item => item.title); // Example: Use title as label
+
+        const ctx = document.getElementById('myChart').getContext('2d')
+        
+      
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -116,53 +129,56 @@ function Dashboard() {
                 }
             }
         });
+
+        
     };
 
     
-
-  
     return (
-        <div className="flex bg-rose-300 min-h-[60em] w-[80em] p-6 ">
+        <div className="flex min-h-[60em] w-[80em] p-6 ">
             
             {/* this div caters to all transaction and below */}
-            <div className="flex-col bg-slate-400 min-w-[40em] mr-2">
+            <div className="flex-col min-w-[40em] mr-2">
                 <div className="flex-col">
                     <div className="flex">
-                        <h1 className="font-bold text-3xl">All Transactions</h1>
+                        <h1 className="font-bold text-3xl text-white">All Transactions</h1>
                     </div>
-                    <div className="flex w-[40em] justify-center h-[40em]">
-                    <canvas id="myChart" className="w-[5em] h-[5em]"></canvas>
+                   
+                    <div className="flex w-[40em] justify-center h-[40em] ">
+                        <canvas id="myChart" className=""></canvas>
                     </div>
+                    
                 </div>
+                
 
                 <div className="flex-col h-[24em]">
                     <div className="flex justify-between">
-                        <div className="flex-col bg-rose-200 w-[18em] h-[5em] rounded-lg">
+                        <div className="flex-col bg-yellow-300 w-[18em] h-[5em] rounded-lg pt-[0.4em]">
                             <div className="flex justify-center">
-                                <h1>Total Income</h1>
+                                <h1 className="font-bold text-lg">Total Income</h1>
                             </div>
-                            <div className="flex justify-center">
+                            <div  className="flex justify-center text-lime-600 text-3xl">
                                 {`$${income}`}
                             </div>
                         </div>
 
-                        <div className="flex-col bg-rose-200 w-[18em] h-[5em] rounded-lg">
+                        <div className="flex-col bg-yellow-300 w-[18em] h-[5em] rounded-lg pt-[0.4em]">
                             <div className="flex justify-center">
-                                <h1>Total Expense</h1>
+                                <h1 className="font-bold text-lg">Total Expense</h1>
                             </div>
-                            <div className="flex justify-center">
+                            <div className="flex justify-center text-red-600 text-3xl">
                                 {`$${expense}`}
                             </div>
                         </div>
                     </div>
 
                    <div className="flex justify-center mt-[3em]">
-                    <div className="flex-col bg-slate-300 w-[20em] h-[5em] rounded-lg">
+                    <div className="flex-col bg-yellow-500 w-[20em] h-[5em] rounded-lg pt-[0.5em]">
                             <div className="flex justify-center">
-                                <h1>Total Balance</h1>
+                                <h1 className="font-bold text-lg">Total Balance</h1>
                             </div>
                             <div className="flex justify-center">
-                                {total < 0 ? <span className="text-red-600">{total}</span> : <span className="text-lime-600">${total}</span>}
+                                {total < 0 ? <span className="text-red-600 text-3xl">{total}</span> : <span className="text-lime-600 text-3xl">${total}</span>}
                             </div>
                         </div>
                    </div>
@@ -172,26 +188,26 @@ function Dashboard() {
             <div className="flex-col mt-8 w-[20em]">
                 <div className="flex-col h-[28em]">
                     <div>
-                        <h2 className="flex font-bold text-2xl">Recent History</h2>
+                        <h2 className="flex font-bold text-2xl text-white">Recent History</h2>
                     </div>
-                    <div className="flex justify-center max-h-[24em] mt-4 ">
-                        <h3>list all here....</h3>
+                    <div className="flex justify-center max-h-[24em] mt-4">
+                        <Recent />
                     </div>
                 </div>
 
-                <div className="flex-col mt-4 h-[8em]">
-                <div className="flex justify-between">
+                <div className="flex-col mt-12 h-[8em]">
+                <div className="flex justify-between items-center p-1">
                     <div>
-                        <h2 className="text-sm font-bold">Min</h2>
+                        <h2 className="text-sm font-bold text-white">Min</h2>
                     </div>
                     <div>
-                        <h2 className="text-xl font-bold">Expense</h2>
+                        <h2 className="text-xl font-bold text-white">Expense</h2>
                     </div>
                     <div>
-                        <h2 className="text-sm font-bold">Max</h2>
+                        <h2 className="text-sm font-bold text-white">Max</h2>
                     </div>
                 </div>
-                <div className="flex justify-between h-[4em] rounded-xl items-center bg-slate-200 mt-2">
+                <div className="flex justify-between h-[4em] rounded-xl items-center p-1 bg-slate-200 mt-2">
                     <p>
                         {`$${minE}`}
                     </p>
@@ -202,18 +218,18 @@ function Dashboard() {
                 </div>
 
                 <div  className="flex-col mt-4 h-[8em]">
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center p-1">
                     <div>
-                        <h2 className="text-sm font-bold">Min</h2>
+                        <h2 className="text-sm font-bold text-white">Min</h2>
                     </div>
                     <div>
-                        <h2 className="text-xl font-bold">Salary</h2>
+                        <h2 className="text-xl font-bold text-white">Salary</h2>
                     </div>
                     <div>
-                        <h2 className="text-sm font-bold">Max</h2>
+                        <h2 className="text-sm font-bold text-white">Max</h2>
                     </div>
                 </div>
-                <div className="flex justify-between h-[4em] rounded-xl items-center bg-slate-200 mt-2">
+                <div className="flex p-1 justify-between h-[4em] rounded-xl items-center bg-slate-200 mt-2">
                     <p>
                         {`$${minI}`}
                     </p>
