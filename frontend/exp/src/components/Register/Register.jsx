@@ -43,7 +43,7 @@ function Register() {
     }
     
     return (
-        <div className="flex justify-center min-h-[60em] w-[80em] bg-[url('https://as1.ftcdn.net/v2/jpg/04/30/08/18/1000_F_430081855_QEVpMDhdx2GEKXcbKxUnLjzvwrYhsar8.jpg')]">
+        <div className="flex justify-center min-h-[60em] w-[80em] bg-[url('https://imam-us.org/wp-content/uploads/2021/06/WSID-Investing-in-the-Stock-Market-WSG.jpg')]">
             <form onSubmit={handleSubmit(handleRegister)} className="bg-slate-200 w-[40em] h-[50em] mt-[5em]">
             
             <div className="flex justify-center mt-[8em]">

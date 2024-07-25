@@ -38,7 +38,7 @@ function Login() {
     }
     
     return (
-        <div className="flex justify-center min-h-[60em] w-[80em] bg-[url('https://as1.ftcdn.net/v2/jpg/04/30/08/18/1000_F_430081855_QEVpMDhdx2GEKXcbKxUnLjzvwrYhsar8.jpg')]">
+        <div className="flex justify-center min-h-[60em] w-[80em] bg-[url('https://imam-us.org/wp-content/uploads/2021/06/WSID-Investing-in-the-Stock-Market-WSG.jpg')]">
             <form onSubmit={handleSubmit(handleLogin)} className="mt-[5em] rounded-2xl border-none bg-slate-200 w-[40em] h-[50em]">
             <div className="flex justify-center mt-[12em] ">
                 <h1 className="font-bold text-3xl">

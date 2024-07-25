@@ -4,7 +4,8 @@ import axios from "axios"
 
 function Recent() {
 
-    const [recent, setRecent] = useState([])
+    let [recent, setRecent] = useState([])
+    const [newRecent, setNewRecent] = useState([])
 
     useEffect(() => {
         ;(async () => {
@@ -18,6 +19,13 @@ function Recent() {
             console.log(response)
 
             setRecent(response.data.data)
+            recent = recent.filter((_,index) => (
+                index < 5
+            ))
+
+            console.log(recent)
+            setNewRecent(recent)
+          
         })()
     }, [])
 
@@ -25,9 +33,9 @@ function Recent() {
         
             <ul className="h-[24em]  w-[20em]">
                 {
-                    recent.map((item) => (
+                    newRecent.map((item) => (
                         <li className="flex-col">
-                            <div className="flex justify-between bg-slate-300 h-[4em] m-2 rounded-lg items-center p-4">
+                            <div className="flex justify-between bg-slate-300 h-[4em] m-2 rounded-xl items-center p-4" >
                             
                                 <h1>{item.title}</h1>
                             

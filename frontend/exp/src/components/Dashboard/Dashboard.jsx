@@ -1,8 +1,8 @@
 import React from "react"
 import { useEffect, useState } from "react"
 import axios from "axios"
-import Chart from 'chart.js/auto';
 import Recent from "../Recents/Recent.jsx"
+import Graph from "../Graph/Graph.jsx"
 
 function Dashboard() {
 
@@ -49,7 +49,7 @@ function Dashboard() {
              setTotal(final)
 
              
-            await createGraph()
+          //  await createGraph()
             
          } catch (error) {
              console.error(error.message)
@@ -60,80 +60,6 @@ function Dashboard() {
      }, [income, total, expense])
  
 
-    const processIncomesAndExpenses = async () => {
-        try {
-            const expense = await axios.get("/api/v1/expenses/fetchExpense");
-            const incomes = await axios.get("/api/v1/incomes/fetchIncome");
-            console.log(...expense.data.data)
-            console.log(...incomes.data.data)
-            
-            
-            const inc = incomes.data.data
-            const exp = expense.data.data
-         
-            const combinedData = [...inc, ...exp];
-            combinedData.sort((a, b) => new Date(a.date) - new Date(b.date));
-           
-            console.log(combinedData)
-    
-            return combinedData;
-        } catch (error) {
-            console.error("Error processing incomes and expenses:", error.message);
-            return [];
-        }
-    };
-   
-
-    const createGraph = async () => {
-        const data = await processIncomesAndExpenses();
-
-        const dates = data.map(item => new Date(item.date));
-        const amounts = data.map(item => item.amount);
-
-        console.log(dates)
-        console.log(amounts)
-        //const labels = data.map(item => item.title); // Example: Use title as label
-
-        const ctx = document.getElementById('myChart').getContext('2d')
-        
-      
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: dates,
-                datasets: [{
-                    label: 'Amount',
-                    data: amounts,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            unit: 'day'
-                        },
-                        title: {
-                            display: true,
-                            text: 'Date'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Amount'
-                        }
-                    }
-                }
-            }
-        });
-
-        
-    };
-
-    
     return (
         <div className="flex min-h-[60em] w-[80em] p-6 ">
             
@@ -144,8 +70,8 @@ function Dashboard() {
                         <h1 className="font-bold text-3xl text-white">All Transactions</h1>
                     </div>
                    
-                    <div className="flex w-[40em] justify-center h-[40em] ">
-                        <canvas id="myChart" className=""></canvas>
+                    <div className="flex w-[40em] justify-center h-[40em] pt-[4em]">
+                        <Graph />
                     </div>
                     
                 </div>
@@ -153,7 +79,7 @@ function Dashboard() {
 
                 <div className="flex-col h-[24em]">
                     <div className="flex justify-between">
-                        <div className="flex-col bg-yellow-300 w-[18em] h-[5em] rounded-lg pt-[0.4em]">
+                        <div className="flex-col bg-yellow-300 w-[18em] h-[5em] rounded-lg pt-[0.4em] cursor-pointer">
                             <div className="flex justify-center">
                                 <h1 className="font-bold text-lg">Total Income</h1>
                             </div>
@@ -162,7 +88,7 @@ function Dashboard() {
                             </div>
                         </div>
 
-                        <div className="flex-col bg-yellow-300 w-[18em] h-[5em] rounded-lg pt-[0.4em]">
+                        <div className="flex-col bg-yellow-300 w-[18em] h-[5em] cursor-pointer rounded-lg pt-[0.4em]">
                             <div className="flex justify-center">
                                 <h1 className="font-bold text-lg">Total Expense</h1>
                             </div>
@@ -173,7 +99,7 @@ function Dashboard() {
                     </div>
 
                    <div className="flex justify-center mt-[3em]">
-                    <div className="flex-col bg-yellow-500 w-[20em] h-[5em] rounded-lg pt-[0.5em]">
+                    <div className="flex-col bg-yellow-500 w-[20em] h-[5em] cursor-pointer rounded-lg pt-[0.5em]">
                             <div className="flex justify-center">
                                 <h1 className="font-bold text-lg">Total Balance</h1>
                             </div>

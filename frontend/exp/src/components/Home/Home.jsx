@@ -26,7 +26,7 @@ function Home() {
                 setData(user.data.data)
             }
         )()
-    }, [])
+    }, [setData])
 
    
     const handleLogout = async () => {

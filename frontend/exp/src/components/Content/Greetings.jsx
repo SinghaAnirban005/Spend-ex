@@ -24,11 +24,11 @@ function Greetings() {
     const [user, setUser] = useState('')
 
     return (
-        <div className="flex bg-[url('https://as1.ftcdn.net/v2/jpg/04/30/08/18/1000_F_430081855_QEVpMDhdx2GEKXcbKxUnLjzvwrYhsar8.jpg')] min-h-[60em] w-[80em] justify-center items-center">
-            <h1>
-                {active ? <h1 className="text-yellow-800 font-bold text-4xl">
+        <div className="flex bg-[url('https://imam-us.org/wp-content/uploads/2021/06/WSID-Investing-in-the-Stock-Market-WSG.jpg')] min-h-[60em] w-[80em] justify-center items-center">
+            <h1 className="-mt-[10em]">
+                {active ? <h1 className=" font-bold text-4xl">
                     Welcome to Spend-Ex {user.fullName}
-                </h1> : <h1 className="text-yellow-800 font-bold text-4xl">Login or register yourself to Spend-Ex</h1>}
+                </h1> : <h1 className=" font-bold text-4xl">Login or register yourself to Spend-Ex</h1>}
             </h1>
 
             {
