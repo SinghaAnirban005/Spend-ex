@@ -44,7 +44,7 @@ function Register() {
     
     return (
         <div className="flex justify-center min-h-[60em] w-[80em] bg-[url('https://imam-us.org/wp-content/uploads/2021/06/WSID-Investing-in-the-Stock-Market-WSG.jpg')]">
-            <form onSubmit={handleSubmit(handleRegister)} className="bg-slate-200 w-[40em] h-[50em] mt-[5em]">
+            <form onSubmit={handleSubmit(handleRegister)} className="bg-slate-200 w-[40em] h-[50em] mt-[10em]">
             
             <div className="flex justify-center mt-[8em]">
                 <div className="flex-col">

@@ -48,8 +48,6 @@ function Dashboard() {
              const final = income - expense 
              setTotal(final)
 
-             
-          //  await createGraph()
             
          } catch (error) {
              console.error(error.message)
@@ -104,7 +102,7 @@ function Dashboard() {
                                 <h1 className="font-bold text-lg">Total Balance</h1>
                             </div>
                             <div className="flex justify-center">
-                                {total < 0 ? <span className="text-red-600 text-3xl">{total}</span> : <span className="text-lime-600 text-3xl">${total}</span>}
+                                {total < 0 ? <span className="text-red-600 text-3xl">${Math.abs(total)}</span> : <span className="text-lime-800 text-3xl">${total}</span>}
                             </div>
                         </div>
                    </div>
