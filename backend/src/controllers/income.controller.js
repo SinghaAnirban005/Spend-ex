@@ -57,11 +57,12 @@ const deleteIncome = asyncHandler(async(req, res) => {
         throw new ApiError(400, "author ID not available")
     }
 
-    const deletedIncome = await Income.findOneAndDelete(
+    const deletedIncome = await Income.deleteOne(
         {
             Author: authorId,
         }
     )
+    console.log(deletedIncome)
 
     if(!deletedIncome) {
         throw new ApiError(400, "Error while deleting income")

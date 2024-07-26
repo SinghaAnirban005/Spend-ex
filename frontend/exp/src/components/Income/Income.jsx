@@ -1,36 +1,20 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useEffect, useState } from 'react'
 import axios from "axios"
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from "react-redux"
-import { addIncome } from "../../store/Slice.js"
+import { addIncome, clearIncome } from "../../store/Slice.js"
 import { ApiError } from '../../../../../backend/src/utils/ApiError.js'
 
 function Income() {
 
     const { register , handleSubmit } = useForm()
     const dispatch = useDispatch()
-    const info = useSelector((state) => state.income)
-    const [incomeData, setIncomeData] = useState([])
     const [income , setIncome] = useState(0)
 
-    const handleDeletion = () => {
-        try {
-            const res = axios.post("/api/v1/incomes/delete-income")
+    const incomes  = useSelector((state) => state.income)
 
-            if(!res) {
-                throw new Error("Server error")
-            }
-
-
-        } catch (error) {
-            console.error(error.message)
-            throw new Error("Failed to delete income")
-        }
-    }
-
-
-    const handleIncome = async(data) => {
+    const handleIncome = useCallback( async(data) => {
 
         console.log(data)
 
@@ -43,14 +27,10 @@ function Income() {
                 throw new Error("Couldn't handle data resposne")
             }
 
-            const incomeInfo = response.data.data
-// Work on the redux state workflow later ..,.
-            //dispatch(addIncome(incomeInfo))
-            const lists = await axios.get("/api/v1/incomes/getIncome")
-            setIncomeData(lists.data.data)
-
-            const income = await axios.get("/api/v1/incomes/total-income")
-            setIncome(income.data.data)
+            // const income = await axios.get("/api/v1/incomes/total-income")
+            // setIncome(income.data.data)
+            const totalIncome = await axios.get("/api/v1/incomes/total-income")
+            setIncome(totalIncome.data.data)
            
         } 
         catch (error) {
@@ -58,35 +38,52 @@ function Income() {
             throw error
         }
 
-    }
+    }, [])
+
+    const handleDeletion = useCallback( async() => {
+        try {
+            // const res = await axios.post("/api/v1/incomes/delete-income")
+        
+            // if(!res) {
+            //     throw new Error("Server error")
+            // }
+         
+            // const totalIncome = await axios.get("/api/v1/incomes/total-income")
+            // setIncome(totalIncome.data.data)
+            
+        } catch (error) {
+            console.error(error.message)
+            throw new Error("Failed to delete income")
+        }
+    }, [])
 
     useEffect(() => {
         ;(
          async () => {
              try {
+
+                dispatch(clearIncome())
+
                  const response = await axios.get("/api/v1/incomes/getIncome")
  
                  if(!response) {
                      throw new ApiError("Failed to validate response")
                  }
                  console.log(response)
-                 setIncomeData(response.data.data)
+               
+                dispatch(addIncome(response.data.data))
+                
 
-                 const totalIncome = await axios.get("/api/v1/incomes/total-income")
-                 if(!totalIncome) {
-                    throw new Error("Failed to calculate total income")
-                 }
-
+                const totalIncome = await axios.get("/api/v1/incomes/total-income")
                 setIncome(totalIncome.data.data)
-
-
              } catch (error) {
                  console.error(error.message)
                  throw error
              }
          }
         )()
-     }, [handleDeletion])
+     }, [handleIncome, handleDeletion, income])
+
 
     return (
         <div className='flex-col min-h-[60em] w-[80em] p-6 '>
@@ -161,9 +158,9 @@ function Income() {
             <div className=' flex justify-center p-2 w-[37em] max-w-[37em]'>
                <ul className="">
                 {
-                    incomeData.map((item) => (
-                        <li>
-                        <div className='flex-col p-2 bg-lime-300 opacity-100 hover:opacity-75 my-2 h-[4em] w-[35em] rounded-lg'>
+                    incomes.filter((_, index) => index != 0).reverse().map((item) => (
+                        <li key={item._id}>
+                        <div className='flex-col p-2 bg-lime-300 opacity-100 hover:opacity-75 my-2 h-[4em] w-[35em] rounded-lg overflow-scroll'>
                             <div className='flex justify-between'>
                                 <div>
                                     <h1>{item.title}</h1>
@@ -181,7 +178,7 @@ function Income() {
 
                                 <div className='flex items-center mr-8'>
                                     <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDX2PdV2MqZevly5QHTHk_KTh5woA3bDjZMw&s' alt='date' className='h-4 w-4 rounded-md' />
-                                    <h2>{item.date.split("T")[0]}</h2>
+                                    <h2>{item.date}</h2>
                                 </div>
 
                                 <div className='flex items-center'>

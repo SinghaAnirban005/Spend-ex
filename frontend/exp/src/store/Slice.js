@@ -9,19 +9,21 @@ const initialState = {
         username: ''
     },
 
-    income: [{
-    title: "",
-    amount: 0,
-    date: "",
-    note: "",
-    }],
+    income: [],
 
     expense: [{
         title: "",
         amount: 0,
         date: "",
         note: "",
-    }]
+    }],
+
+    recents: [
+        {
+            title: '',
+            amount: ''
+        }
+    ]
 }
 
 export const ExpenseSlice = createSlice({
@@ -36,6 +38,10 @@ export const ExpenseSlice = createSlice({
         logout: (state, action) => {
             state.status = false;
             state.imgURL = ''
+            state.recents = []
+            state.userInfo = {}
+            state.income = []
+            state.expense = []
         },
 
         avatarURL: (state, action) => {
@@ -58,16 +64,12 @@ export const ExpenseSlice = createSlice({
         },
 
         addIncome: (state, action) => {
-            if(state.status) {
-                const incomeData = {
-                    title: action.payload.title,
-                    amount: action.payload.amount,
-                    date: action.payload.date,
-                    note: action.payload.Note,
-                }
+            if(state.status && action.payload.length !== 0) {
+                action.payload.map((item) => {
+                    state.income.push(item)
+                })
 
-                state.income.push(incomeData)
-                console.log(incomeData)
+                console.log(action.payload)
             }
         },
 
@@ -83,9 +85,41 @@ export const ExpenseSlice = createSlice({
 
                 state.income.push(incomeData)
             }
-        }
+        },
+
+        userRecents: (state, action) => {
+            if(state.status) {
+            
+                console.log(action.payload)
+                action.payload.map((item) => {
+                    state.recents.push(item)
+                })
+
+                console.log(state.recents)
+            }
+        },
+
+        clearIncome: (state, action) => {
+            state.income = [{}]
+        },
+
+        clearRecents: (state, action) => {
+            state.recents = [{}]
+        },
+
     }
 })
 
-export const {login, logout, addExpense, addIncome, avatarURL, getUser } = ExpenseSlice.actions
+export const {
+    login, 
+    logout, 
+    addExpense, 
+    addIncome, 
+    avatarURL, 
+    getUser, 
+    userRecents, 
+    clearIncome,
+    clearRecents,
+     
+} = ExpenseSlice.actions
 export default ExpenseSlice.reducer

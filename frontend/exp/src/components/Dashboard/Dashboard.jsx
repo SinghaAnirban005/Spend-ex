@@ -59,7 +59,7 @@ function Dashboard() {
  
 
     return (
-        <div className="flex min-h-[60em] w-[80em] p-6 ">
+        <div className="flex min-h-[60em] w-[80em] p-6">
             
             {/* this div caters to all transaction and below */}
             <div className="flex-col min-w-[40em] mr-2">

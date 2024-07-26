@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react'
 import axios from "axios"
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from "react-redux"
-import { addExpense } from "../../store/Slice.js"
+// import { addExpense } from "../../store/Slice.js"
 import { ApiError } from '../../../../../backend/src/utils/ApiError.js'
 
 function Expense() {
 
     const { register , handleSubmit } = useForm()
-    const dispatch = useDispatch()
+    //const dispatch = useDispatch()
     const info = useSelector((state) => state.income)
     const [expenseData, setExpenseData] = useState([])
     const [expense , setExpense] = useState(0)
