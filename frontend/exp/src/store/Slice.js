@@ -2,11 +2,18 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     status: false,
+
+    imgURL: '',
+    userInfo: {
+        fullName: '',
+        username: ''
+    },
+
     income: [{
-        title: "",
-        amount: 0,
-        date: "",
-        note: "",
+    title: "",
+    amount: 0,
+    date: "",
+    note: "",
     }],
 
     expense: [{
@@ -28,6 +35,26 @@ export const ExpenseSlice = createSlice({
 
         logout: (state, action) => {
             state.status = false;
+            state.imgURL = ''
+        },
+
+        avatarURL: (state, action) => {
+            if(state.status) {
+                state.imgURL = action.payload
+
+                console.log(state.imgURL)
+                console.log(action.payload)
+            }
+        },
+
+        getUser: (state, action) => {
+            if(state.status) {
+                state.userInfo = {
+                    fullName: action.payload.fullName,
+                    username: action.payload.username
+                }
+               
+            }
         },
 
         addIncome: (state, action) => {
@@ -60,5 +87,5 @@ export const ExpenseSlice = createSlice({
     }
 })
 
-export const {login, logout, addExpense, addIncome } = ExpenseSlice.actions
+export const {login, logout, addExpense, addIncome, avatarURL, getUser } = ExpenseSlice.actions
 export default ExpenseSlice.reducer

@@ -2,8 +2,9 @@ import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import axios from "axios"
-import {login} from "../../store/Slice.js"
+import {login, avatarURL, getUser} from "../../store/Slice.js"
 import { useNavigate } from "react-router-dom"
+
 
 function Login() {
    
@@ -29,6 +30,10 @@ function Login() {
             }
 
             dispatch(login())
+            const userData = await axios.get("/api/v1/users/current-user")
+            dispatch(avatarURL(userData.data.data.avatar))
+            dispatch(getUser(userData.data.data))
+
             navigate("/")
 
         } catch (error) {
