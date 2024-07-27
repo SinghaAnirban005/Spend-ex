@@ -182,7 +182,7 @@ function Income() {
 
                                 <div className='flex items-center mr-8'>
                                     <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDX2PdV2MqZevly5QHTHk_KTh5woA3bDjZMw&s' alt='date' className='h-4 w-4 rounded-md' />
-                                    <h2>{item.date}</h2>
+                                    <h2>{item.date.split("T")[0]}</h2>
                                 </div>
 
                                 <div className='flex items-center'>

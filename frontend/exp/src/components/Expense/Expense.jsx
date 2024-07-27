@@ -160,7 +160,7 @@ function Income() {
                 {
                     expenses.filter((_, index) => index != 0).reverse().map((item) => (
                         <li key={item._id}>
-                        <div className='flex-col p-2 bg-red-400 opacity-100 hover:opacity-75 my-2 h-[4em] w-[35em] rounded-lg overflow-scroll'>
+                        <div className=' p-2 bg-red-400 opacity-100 hover:opacity-75 my-2 min-h-[4em] w-[35em] rounded-lg'>
                             <div className='flex justify-between'>
                                 <div>
                                     <h1>{item.title}</h1>
@@ -178,7 +178,7 @@ function Income() {
 
                                 <div className='flex items-center mr-8'>
                                     <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDX2PdV2MqZevly5QHTHk_KTh5woA3bDjZMw&s' alt='date' className='h-4 w-4 rounded-md' />
-                                    <h2>{item.date}</h2>
+                                    <h2>{item.date.split("T")[0]}</h2>
                                 </div>
 
                                 <div className='flex items-center'>
