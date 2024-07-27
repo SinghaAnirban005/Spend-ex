@@ -6,6 +6,7 @@ import Graph from "../Graph/Graph.jsx"
 
 function Dashboard() {
 
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [income, setIncome] = useState(0)
     const [expense, setExpense] = useState(0)
     const [total, setTotal] = useState(0)
@@ -19,28 +20,28 @@ function Dashboard() {
 
         ;(async() => {
          try {
-             const res1 = await axios.get("/api/v1/incomes/total-income")
+             const res1 = await axios.get(`${apiUrl}/incomes/total-income`)
              if(!res1) {
                  throw new Error("Failed to fetch income")
              }
  
              setIncome(res1.data.data)
  
-             const res2 = await axios.get("/api/v1/expenses/total-expense")
+             const res2 = await axios.get(`${apiUrl}/expenses/total-expense`)
              if(!res2) {
                  throw new Error("Failed to fetch expense")
              }
  
              setExpense(res2.data.data)
  
-             const minIncome = await axios.get("/api/v1/incomes/get-minimum")
-             const maxIncome = await axios.get("/api/v1/incomes/get-maximum")
+             const minIncome = await axios.get(`${apiUrl}/incomes/get-minimum`)
+             const maxIncome = await axios.get(`${apiUrl}/incomes/get-maximum`)
  
              setMinI(minIncome.data.data)
              setMaxI(maxIncome.data.data)
  
-             const minExpense = await axios.get("/api/v1/expenses/get-minimum")
-             const maxExpense = await axios.get("/api/v1/expenses/get-maximum")
+             const minExpense = await axios.get(`${apiUrl}/expenses/get-minimum`)
+             const maxExpense = await axios.get(`${apiUrl}/expenses/get-maximum`)
  
              setMinE(minExpense.data.data)
              setMaxE(maxExpense.data.data)

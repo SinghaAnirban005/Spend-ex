@@ -6,51 +6,22 @@ import { logout } from "../../store/Slice.js"
 import { useNavigate } from "react-router-dom"
 
 function Home() {
-  
+    
+    const apiUrl = import.meta.env.VITE_API_URL;
     const active = useSelector((state) => state.status)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const profileURL = useSelector((state) => state.imgURL)
     const userDetails = useSelector((state) => state.userInfo)
 
-// const [loading, setLoading] = useState(true)
-  const [userData, setData] = useState({})
+    const [userData, setData] = useState({})
   
-
-//   useEffect(() => {
-//      try {
-//       if(active) {
-//        ;(async() => {
-//          await logProfile()
-//         })()
-//       }
-//      } catch (error) {
-//         console.error(error.message)
-//      } 
-//   }, [])
-
-
-//   const logProfile = async () => {
-//     try {
-//       const user = await axios.get("/api/v1/users/current-user")
-//       if(!user){
-//           throw new Error("User not found !!")
-//       }
-  
-//        setData(user.data.data)
-  
-//     } catch (error) {
-//       console.error(error.message)
-//       throw new Error(error.message)
-//     }
-   
-// }
    
     const handleLogout = async () => {
         try {
 
             if(active) {
-                const res = await axios.post("/api/v1/users/logout")
+                const res = await axios.post(`${apiUrl}/users/logout`)
             
                 if(!res) {
                     throw new Error("Logout API error !! ")

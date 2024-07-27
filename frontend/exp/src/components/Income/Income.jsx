@@ -9,6 +9,8 @@ import { ApiError } from '../../../../../backend/src/utils/ApiError.js'
 
 function Income() {
 
+    const apiUrl = import.meta.env.VITE_API_URL;
+
     const { register , handleSubmit } = useForm()
     const dispatch = useDispatch()
     const [income , setIncome] = useState(0)
@@ -22,16 +24,14 @@ function Income() {
 
         try {
 
-            const response = await axios.post("/api/v1/incomes/create-income", data)
+            const response = await axios.post(`${apiUrl}/incomes/create-income`, data)
 
             if(!response) {
                 console.log("Couldn't handle data resposne")
                 throw new Error("Couldn't handle data resposne")
             }
 
-            // const income = await axios.get("/api/v1/incomes/total-income")
-            // setIncome(income.data.data)
-            const totalIncome = await axios.get("/api/v1/incomes/total-income")
+            const totalIncome = await axios.get(`${apiUrl}/incomes/total-income`)
             setIncome(totalIncome.data.data)
            
         } 
@@ -45,13 +45,13 @@ function Income() {
     const handleDeletion = useCallback( async(id) => {
         try {
             //console.log(id)
-            const res = await axios.delete(`/api/v1/incomes/delete-income/${id}`)
+            const res = await axios.delete(`${apiUrl}/incomes/delete-income/${id}`)
         
             if(!res) {
                 throw new Error("Server error")
             }
          
-            const totalIncome = await axios.get("/api/v1/incomes/total-income")
+            const totalIncome = await axios.get(`${apiUrl}/incomes/total-income`)
             setIncome(totalIncome.data.data)
             
         } catch (error) {
@@ -68,7 +68,7 @@ function Income() {
 
                 dispatch(clearIncome())
 
-                 const response = await axios.get("/api/v1/incomes/getIncome")
+                 const response = await axios.get(`${apiUrl}/incomes/getIncome`)
  
                  if(!response) {
                      throw new ApiError("Failed to validate response")
@@ -78,7 +78,7 @@ function Income() {
                 dispatch(addIncome(response.data.data))
                 
 
-                const totalIncome = await axios.get("/api/v1/incomes/total-income")
+                const totalIncome = await axios.get(`${apiUrl}/incomes/total-income`)
                 setIncome(totalIncome.data.data)
              } catch (error) {
                  console.error(error.message)

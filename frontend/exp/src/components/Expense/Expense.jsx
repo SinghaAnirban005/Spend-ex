@@ -7,6 +7,7 @@ import { addExpense, clearExpense } from "../../store/Slice.js"
 
 function Income() {
 
+    const apiUrl = import.meta.env.VITE_API_URL;
     const { register , handleSubmit } = useForm()
     const dispatch = useDispatch()
     const [expense , setExpense] = useState(0)
@@ -19,7 +20,7 @@ function Income() {
 
         try {
 
-            const response = await axios.post("/api/v1/expenses/create-expense", data)
+            const response = await axios.post(`${apiUrl}/expenses/create-expense`, data)
 
             if(!response) {
                 console.log("Couldn't handle data resposne")
@@ -27,7 +28,7 @@ function Income() {
             }
 
             
-            const totalExpense = await axios.get("/api/v1/expenses/total-expense")
+            const totalExpense = await axios.get(`${apiUrl}/expenses/total-expense`)
             setExpense(totalExpense.data.data)
            
         } 
@@ -41,13 +42,13 @@ function Income() {
     const handleDeletion = useCallback( async(id) => {
         try {
             //console.log(id)
-            const res = await axios.delete(`/api/v1/expenses/delete-expense/${id}`)
+            const res = await axios.delete(`${apiUrl}/expenses/delete-expense/${id}`)
         
             if(!res) {
                 throw new Error("Server error")
             }
          
-            const totalIncome = await axios.get("/api/v1/expenses/total-expense")
+            const totalIncome = await axios.get(`${apiUrl}/expenses/total-expense`)
             setExpense(totalIncome.data.data)
             
         } catch (error) {
@@ -64,7 +65,7 @@ function Income() {
 
                 dispatch(clearExpense())
 
-                 const response = await axios.get("/api/v1/expenses/getExpense")
+                 const response = await axios.get(`${apiUrl}/expenses/getExpense`)
  
                  if(!response) {
                      throw new Error("Failed to validate response")
@@ -74,7 +75,7 @@ function Income() {
                 dispatch(addExpense(response.data.data))
                 
 
-                const totalIncome = await axios.get("/api/v1/expenses/total-expense")
+                const totalIncome = await axios.get(`${apiUrl}/expenses/total-expense`)
                 setExpense(totalIncome.data.data)
              } catch (error) {
                  console.error(error.message)

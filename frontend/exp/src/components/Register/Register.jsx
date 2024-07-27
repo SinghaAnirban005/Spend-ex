@@ -5,6 +5,8 @@ import { useNavigate,  } from "react-router-dom"
 
 
 function Register() {
+
+    const apiUrl = import.meta.env.VITE_API_URL;
     
     const [error, setError] = useState('')
     const { register, handleSubmit } = useForm()
@@ -26,7 +28,7 @@ function Register() {
                 throw new Error("Enter data completely !!")
             }
     
-            const response = await axios.post("/api/v1/users/register", formData)
+            const response = await axios.post(`${apiUrl}/users/register`, formData)
             if(!response) {
                 setError("Server error while processing request")
                 throw new Error("Server error while processing request")

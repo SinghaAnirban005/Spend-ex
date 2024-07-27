@@ -6,6 +6,7 @@ import { userRecents, clearRecents } from "../../store/Slice.js"
 
 function Recent() {
 
+    const apiUrl = import.meta.env.VITE_API_URL;    
     // let [recent, setRecent] = useState([])
  
     const dispatch = useDispatch()
@@ -16,7 +17,7 @@ function Recent() {
         ;(async () => {
 
             dispatch(clearRecents())
-            const response = await axios.get("/api/v1/users/recent-history")
+            const response = await axios.get(`${apiUrl}/users/recent-history`)
             
             if(!response) {
                 throw new Error("Failed to fetch response")

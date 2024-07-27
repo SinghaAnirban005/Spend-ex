@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios"
 import { useSelector } from "react-redux";
 
+
 function Greetings() {
 
+    const apiUrl = import.meta.env.VITE_API_URL;
     const active = useSelector((state) => state.status)
 
     useEffect(() => {
         ;(async () => {
-            const user = await axios.get("/api/v1/users/current-user")
+            const user = await axios.get(`${apiUrl}/users/current-user`)
     
             if(!user) {
                 setError("User not found ☠️ ☠️")

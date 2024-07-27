@@ -27,10 +27,12 @@ ChartJs.register(
 
 function Graph() {
     
+    const apiUrl = import.meta.env.VITE_API_URL;
+    
     useEffect(() => {
         ;( async () => {
-            const inc = await axios.get("/api/v1/incomes/fetchIncome")
-            const exp = await axios.get("/api/v1/expenses/fetchExpense")
+            const inc = await axios.get(`${apiUrl}/incomes/fetchIncome`)
+            const exp = await axios.get(`${apiUrl}/expenses/fetchExpense`)
 
             setIncome(inc.data.data)
             setExpense(exp.data.data)
@@ -42,17 +44,12 @@ function Graph() {
 
     const [income, setIncome] = useState([])
     const [expense, setExpense] = useState([])
-    // const [incAmount, setInc] = useState([])
-    // const [expAmount, setExp] = useState([])
 
     const data = {
 
         labels: expense.map((inc) => {
             return inc.date.split("T")[0]
         }),
-        // labels: income.map((exp) => {
-        //     return exp.date.split("T")[0]
-        // }),
 
         datasets: [
             {

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom"
 
 function Login() {
    
+    const apiUrl = import.meta.env.VITE_API_URL;
     const { register, handleSubmit } = useForm()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -20,7 +21,7 @@ function Login() {
                 throw new Error("Please enter data !!")
             }
             
-            const res = await axios.post("/api/v1/users/login", data)
+            const res = await axios.post(`${apiUrl}/users/login`, data)
 
             if(!res) {
 
@@ -30,7 +31,7 @@ function Login() {
             }
 
             dispatch(login())
-            const userData = await axios.get("/api/v1/users/current-user")
+            const userData = await axios.get(`${apiUrl}/users/current-user`)
             dispatch(avatarURL(userData.data.data.avatar))
             dispatch(getUser(userData.data.data))
 
