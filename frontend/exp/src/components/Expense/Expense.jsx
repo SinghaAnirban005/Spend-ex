@@ -1,36 +1,19 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useEffect, useState } from 'react'
 import axios from "axios"
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from "react-redux"
-// import { addExpense } from "../../store/Slice.js"
-import { ApiError } from '../../../../../backend/src/utils/ApiError.js'
+import { addExpense, clearExpense } from "../../store/Slice.js"
 
-function Expense() {
+function Income() {
 
     const { register , handleSubmit } = useForm()
-    //const dispatch = useDispatch()
-    const info = useSelector((state) => state.income)
-    const [expenseData, setExpenseData] = useState([])
+    const dispatch = useDispatch()
     const [expense , setExpense] = useState(0)
 
-    const handleDeletion = () => {
-        try {
-            const res = axios.post("/api/v1/expenses/delete-expense")
+    const expenses  = useSelector((state) => state.expense)
 
-            if(!res) {
-                throw new Error("Server error")
-            }
-
-
-        } catch (error) {
-            console.error(error.message)
-            throw new Error("Failed to delete income")
-        }
-    }
-
-
-    const handleExpense = async(data) => {
+    const handleIncome = useCallback( async(data) => {
 
         console.log(data)
 
@@ -43,14 +26,9 @@ function Expense() {
                 throw new Error("Couldn't handle data resposne")
             }
 
-            const expenseInfo = response.data.data
-// Work on the redux state workflow later ..,.
-            //dispatch(addIncome(incomeInfo))
-            const lists = await axios.get("/api/v1/expenses/getExpense")
-            setExpenseData(lists.data.data)
-
-            const income = await axios.get("/api/v1/expenses/total-expense")
-            setExpense(income.data.data)
+            
+            const totalExpense = await axios.get("/api/v1/expenses/total-expense")
+            setExpense(totalExpense.data.data)
            
         } 
         catch (error) {
@@ -58,35 +36,54 @@ function Expense() {
             throw error
         }
 
-    }
+    }, [])
+
+    const handleDeletion = useCallback( async(id) => {
+        try {
+            //console.log(id)
+            const res = await axios.delete(`/api/v1/expenses/delete-expense/${id}`)
+        
+            if(!res) {
+                throw new Error("Server error")
+            }
+         
+            const totalIncome = await axios.get("/api/v1/expenses/total-expense")
+            setExpense(totalIncome.data.data)
+            
+        } catch (error) {
+            console.error(error.message)
+            throw new Error("Failed to delete income")
+        }
+        
+    }, [])
 
     useEffect(() => {
         ;(
          async () => {
              try {
+
+                dispatch(clearExpense())
+
                  const response = await axios.get("/api/v1/expenses/getExpense")
  
                  if(!response) {
-                     throw new ApiError("Failed to validate response")
+                     throw new Error("Failed to validate response")
                  }
+                 console.log(response)
                
-                 setExpenseData(response.data.data)
+                dispatch(addExpense(response.data.data))
+                
 
-                 const totalExpense = await axios.get("/api/v1/expenses/total-expense")
-                 if(!totalExpense) {
-                    throw new Error("Failed to calculate total expense")
-                 }
-
-                setExpense(totalExpense.data.data)
-
-
+                const totalIncome = await axios.get("/api/v1/expenses/total-expense")
+                setExpense(totalIncome.data.data)
              } catch (error) {
                  console.error(error.message)
                  throw error
              }
          }
         )()
-     }, [handleDeletion])
+     }, [handleIncome, handleDeletion, expense])
+
 
     return (
         <div className='flex-col min-h-[60em] w-[80em] p-6 '>
@@ -95,15 +92,15 @@ function Expense() {
           </div>
 
         <div className='flex bg-slate-400 font justify-center h-[4em] items-center mb-2 rounded-xl text-lg'>
-            <h1 className='font-bold'>Total Expense : <span className='text-red-700'> - ${expense}</span></h1>
+            <h1 className='font-bold'>Total Expense : <span className='text-red-600'>${expense}</span></h1>
         </div>
 
         <div className='flex justify-between px-6 py-4 min-h-[50em]'>
             <div className='flex-col w-[20em] h-[30em]'>
-                <form onSubmit={handleSubmit(handleExpense)} className='flex-col'>
+                <form onSubmit={handleSubmit(handleIncome)} className='flex-col'>
 
                     <div className='flex justify-center mt-[2em]'>
-                    <input placeholder='Expense title' type='text' {
+                    <input placeholder='Salary title' type='text' {
                         ...register("title", {
                             required: true
                         })
@@ -114,7 +111,7 @@ function Expense() {
 
                     <div className='flex justify-center mt-[1em]'>
 
-                    <input placeholder='Expense Amount' type='number' {
+                    <input placeholder='Salary Amount' type='number' {
                         ...register("amount", {
                             required: true
                         })
@@ -159,16 +156,16 @@ function Expense() {
 
 
             <div className=' flex justify-center p-2 w-[37em] max-w-[37em]'>
-               <ul className="">
+               <ul className="flex-col overflow-scroll max-h-[50em]">
                 {
-                    expenseData.map((item) => (
-                        <li>
-                        <div className='flex-col p-2 bg-red-500 opacity-100 hover:opacity-75 my-2 h-[4em] w-[35em] rounded-lg'>
+                    expenses.filter((_, index) => index != 0).reverse().map((item) => (
+                        <li key={item._id}>
+                        <div className='flex-col p-2 bg-red-400 opacity-100 hover:opacity-75 my-2 h-[4em] w-[35em] rounded-lg overflow-scroll'>
                             <div className='flex justify-between'>
                                 <div>
                                     <h1>{item.title}</h1>
                                 </div>
-                                <div onClick={handleDeletion}>
+                                <div onClick={() => handleDeletion(item._id)}>
                                     <img src='https://i.pinimg.com/564x/ec/08/61/ec08611575516717de6d93e75c9ea444.jpg' alt='bin' className='h-6 w-6 rounded-md cursor-pointer' />
                                 </div>
                             </div>
@@ -181,7 +178,7 @@ function Expense() {
 
                                 <div className='flex items-center mr-8'>
                                     <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDX2PdV2MqZevly5QHTHk_KTh5woA3bDjZMw&s' alt='date' className='h-4 w-4 rounded-md' />
-                                    <h2>{item.date.split("T")[0]}</h2>
+                                    <h2>{item.date}</h2>
                                 </div>
 
                                 <div className='flex items-center'>
@@ -202,4 +199,4 @@ function Expense() {
     )
 }
 
-export default Expense
+export default Income

@@ -11,12 +11,7 @@ const initialState = {
 
     income: [],
 
-    expense: [{
-        title: "",
-        amount: 0,
-        date: "",
-        note: "",
-    }],
+    expense: [],
 
     recents: [
         {
@@ -70,20 +65,18 @@ export const ExpenseSlice = createSlice({
                 })
 
                 console.log(action.payload)
+                console.log(state.income)
             }
         },
 
         addExpense: (state, action) => {
-            if(state.status) {
-                const expenseData = {
-                    title: action.payload.title,
-                    amount: action.payload.amount,
-                    date: action.payload.date,
-                    note: action.payload.note,
-                    totalAmount: action.payload.totalAmount,
-                }
+            if(state.status && action.payload.length !== 0) {
+                action.payload.map((item) => {
+                    state.expense.push(item)
+                })
 
-                state.income.push(incomeData)
+                console.log(action.payload)
+                
             }
         },
 
@@ -107,6 +100,13 @@ export const ExpenseSlice = createSlice({
             state.recents = [{}]
         },
 
+        clearExpense: (state, action) => {
+            state.expense = [{}]
+        },
+
+        testMethod: (state, action) => {
+            console.log(action.payload)
+        }
     }
 })
 
@@ -120,6 +120,8 @@ export const {
     userRecents, 
     clearIncome,
     clearRecents,
+    clearExpense,
+    testMethod
      
 } = ExpenseSlice.actions
 export default ExpenseSlice.reducer

@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Expense } from "../models/expense.model.js";
 import { User } from "../models/user.model.js";
+import mongoose from "mongoose"
 
 const createExpense = asyncHandler( async(req, res) => {
     try {
@@ -53,34 +54,34 @@ const createExpense = asyncHandler( async(req, res) => {
 const deleteExpense = asyncHandler(async(req, res) => {
     try {
         
-    const authorId = req.user._id
-    if(!authorId){
-        throw new ApiError(400, "author ID not available")
-    }
-
-    const deletedExpense = await Expense.findOneAndDelete(
-        {
-            Author: authorId,
+        const {id} = req.params
+        const parsedId = new mongoose.Types.ObjectId(id)
+        console.log(parsedId)
+         
+        console.log(id)
+    
+        const deletedIncome = await Expense.deleteOne({ _id: parsedId })
+        
+        if(!deletedIncome) {
+            console.log("Failed to delete")
+            throw new ApiError(400, "Error while deleting income")
         }
-    )
-
-    if(!deletedExpense) {
-        throw new ApiError(400, "Error while deleting expense")
-    }
-
-
-    return res
-    .status(200)
-    .json(
-        new ApiResponse(
-            400,
-            {},
-            "Succesfully deleted Expense !!"
+    
+    
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                "Succesfully deleted Expense !!"
+            )
         )
-    )
-    } catch (error) {
-        throw new ApiError(500, "Failed to delete expense")
-    }
+        } catch (error) {
+            console.error(error.message)
+            throw new ApiError(500, "Failed to delete expense")
+        }
+    
 
 })
 

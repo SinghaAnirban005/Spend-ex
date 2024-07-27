@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Income } from "../models/income.model.js";
 import { User } from "../models/user.model.js";
+import mongoose from "mongoose";
 
 const createIncome = asyncHandler( async(req, res) => {
     try {
@@ -52,19 +53,16 @@ const createIncome = asyncHandler( async(req, res) => {
 const deleteIncome = asyncHandler(async(req, res) => {
     try {
         
-    const authorId = req.user._id
-    if(!authorId){
-        throw new ApiError(400, "author ID not available")
-    }
+    const {id} = req.params
+    const parsedId = new mongoose.Types.ObjectId(id)
+    console.log(parsedId)
+     
+    console.log(id)
 
-    const deletedIncome = await Income.deleteOne(
-        {
-            Author: authorId,
-        }
-    )
-    console.log(deletedIncome)
-
+    const deletedIncome = await Income.deleteOne({ _id: parsedId })
+    
     if(!deletedIncome) {
+        console.log("Failed to delete")
         throw new ApiError(400, "Error while deleting income")
     }
 
@@ -73,12 +71,13 @@ const deleteIncome = asyncHandler(async(req, res) => {
     .status(200)
     .json(
         new ApiResponse(
-            400,
+            200,
             {},
             "Succesfully deleted Income !!"
         )
     )
     } catch (error) {
+        console.error(error.message)
         throw new ApiError(500, "Failed to delete income")
     }
 
@@ -243,7 +242,7 @@ const fetchIncome = asyncHandler(async(req, res) => {
             {
                 Author: req.user._id
             }
-        ).select('date amount').lean()
+        ).select('date amount _id').lean()
        
         if(!incomes) {
             throw new ApiError(400, "Couldn't query income")

@@ -3,14 +3,16 @@ import { useEffect, useState } from 'react'
 import axios from "axios"
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from "react-redux"
-import { addIncome, clearIncome } from "../../store/Slice.js"
+import { addIncome, clearIncome, testMethod } from "../../store/Slice.js"
 import { ApiError } from '../../../../../backend/src/utils/ApiError.js'
+
 
 function Income() {
 
     const { register , handleSubmit } = useForm()
     const dispatch = useDispatch()
     const [income , setIncome] = useState(0)
+    const uid = useSelector((state) => state.income)
 
     const incomes  = useSelector((state) => state.income)
 
@@ -40,21 +42,23 @@ function Income() {
 
     }, [])
 
-    const handleDeletion = useCallback( async() => {
+    const handleDeletion = useCallback( async(id) => {
         try {
-            // const res = await axios.post("/api/v1/incomes/delete-income")
+            //console.log(id)
+            const res = await axios.delete(`/api/v1/incomes/delete-income/${id}`)
         
-            // if(!res) {
-            //     throw new Error("Server error")
-            // }
+            if(!res) {
+                throw new Error("Server error")
+            }
          
-            // const totalIncome = await axios.get("/api/v1/incomes/total-income")
-            // setIncome(totalIncome.data.data)
+            const totalIncome = await axios.get("/api/v1/incomes/total-income")
+            setIncome(totalIncome.data.data)
             
         } catch (error) {
             console.error(error.message)
             throw new Error("Failed to delete income")
         }
+        
     }, [])
 
     useEffect(() => {
@@ -156,7 +160,7 @@ function Income() {
 
 
             <div className=' flex justify-center p-2 w-[37em] max-w-[37em]'>
-               <ul className="">
+               <ul className="flex-col overflow-scroll max-h-[50em]">
                 {
                     incomes.filter((_, index) => index != 0).reverse().map((item) => (
                         <li key={item._id}>
@@ -165,7 +169,7 @@ function Income() {
                                 <div>
                                     <h1>{item.title}</h1>
                                 </div>
-                                <div onClick={handleDeletion}>
+                                <div onClick={() => handleDeletion(item._id)} key={item._id}>
                                     <img src='https://i.pinimg.com/564x/ec/08/61/ec08611575516717de6d93e75c9ea444.jpg' alt='bin' className='h-6 w-6 rounded-md cursor-pointer' />
                                 </div>
                             </div>

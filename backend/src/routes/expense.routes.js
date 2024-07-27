@@ -15,7 +15,7 @@ const router = Router()
 router.use(verifyJWT)
 
 router.route("/create-expense").post(createExpense)
-router.route("/delete-expense").post(deleteExpense)
+router.route("/delete-expense/:id").delete(deleteExpense)
 router.route("/getExpense").get(getExpense)
 router.route("/total-expense").get(totalExpense)
 router.route("/get-minimum").get(getMinimum)
