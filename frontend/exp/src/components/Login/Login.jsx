@@ -31,7 +31,9 @@ function Login() {
             }
 
             dispatch(login())
-            const userData = await axios.get(`https://spend-ex-1.onrender.com/api/v1/users/current-user`)
+            const userData = await axios.get(`https://spend-ex-1.onrender.com/api/v1/users/current-user`, {
+                withCredentials: true
+            })
             dispatch(avatarURL(userData.data.data.avatar))
             dispatch(getUser(userData.data.data))
 
