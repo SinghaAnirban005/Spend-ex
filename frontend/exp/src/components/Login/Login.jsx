@@ -21,7 +21,7 @@ function Login() {
                 throw new Error("Please enter data !!")
             }
             
-            const res = await axios.post(`https://spend-ex-2.onrender.com/api/v1/users/login`, data)
+            const res = await axios.post(`https://spend-ex-1.onrender.com/api/v1/users/login`, data)
 
             if(!res) {
 
@@ -31,7 +31,7 @@ function Login() {
             }
 
             dispatch(login())
-            const userData = await axios.get(`https://spend-ex-2.onrender.com/api/v1/users/current-user`)
+            const userData = await axios.get(`https://spend-ex-1.onrender.com/api/v1/users/current-user`)
             dispatch(avatarURL(userData.data.data.avatar))
             dispatch(getUser(userData.data.data))
 
