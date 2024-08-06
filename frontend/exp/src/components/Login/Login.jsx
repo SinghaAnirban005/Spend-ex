@@ -16,6 +16,8 @@ function Login() {
 
     const handleLogin = async (data) => {
         try {
+            axios.defaults.withCredentials = true;
+
             if(!data) {
                 setError("Please enter data")
                 throw new Error("Please enter data !!")
@@ -31,9 +33,7 @@ function Login() {
             }
 
             dispatch(login())
-            const userData = await axios.get(`https://spend-ex-1.onrender.com/api/v1/users/current-user`, {
-                withCredentials: true
-            })
+            const userData = await axios.get(`https://spend-ex-1.onrender.com/api/v1/users/current-user`)
             dispatch(avatarURL(userData.data.data.avatar))
             dispatch(getUser(userData.data.data))
 
