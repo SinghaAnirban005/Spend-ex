@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser"
 const app = express()
 
 app.use(cors({
-    origin: "https://spend-ex-2.onrender.com",
+    origin: "https://spend-ex-2.onrender.com/api/v1",
     credentials: true
 }))
 
