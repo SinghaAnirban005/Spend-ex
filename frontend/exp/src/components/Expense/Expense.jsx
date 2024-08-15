@@ -73,8 +73,8 @@ function Income() {
                  console.log(response)
                
                 dispatch(addExpense(response.data.data))
+                 
                 
-
                 const totalIncome = await axios.get(`${apiUrl}/expenses/total-expense`)
                 setExpense(totalIncome.data.data)
              } catch (error) {
@@ -101,7 +101,7 @@ function Income() {
                 <form onSubmit={handleSubmit(handleIncome)} className='flex-col'>
 
                     <div className='flex justify-center mt-[2em]'>
-                    <input placeholder='Salary title' type='text' {
+                    <input placeholder='Expense title' type='text' {
                         ...register("title", {
                             required: true
                         })
@@ -112,7 +112,7 @@ function Income() {
 
                     <div className='flex justify-center mt-[1em]'>
 
-                    <input placeholder='Salary Amount' type='number' {
+                    <input placeholder='Expense Amount' type='number' {
                         ...register("amount", {
                             required: true
                         })
